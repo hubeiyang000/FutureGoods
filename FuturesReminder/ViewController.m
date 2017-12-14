@@ -7,8 +7,15 @@
 //
 
 #import "ViewController.h"
+#import "Y_KLineGroupModel.h"
+#import "NetWorking.h"
+#import "Y_StockChartViewController.h"
+#import "Masonry.h"
+#import "AppDelegate.h"
 
 @interface ViewController ()
+
+
 
 @end
 
@@ -17,8 +24,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
+
 }
 
+- (IBAction)present:(id)sender {
+    AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+    appdelegate.isEable = YES;
+    Y_StockChartViewController *stockChartVC = [Y_StockChartViewController new];
+    stockChartVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:stockChartVC animated:YES completion:nil];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
