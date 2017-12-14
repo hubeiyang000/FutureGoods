@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AFNetworkReachabilityManager.h"
 
 @interface AppDelegate ()
 
@@ -17,7 +18,31 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [self afnReachabilityTest];
     return YES;
+}
+
+- (void)afnReachabilityTest {
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        // 一共有四种状态
+        switch (status) {
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"AFNetworkReachability Not Reachable");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"AFNetworkReachability Reachable via WWAN");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"AFNetworkReachability Reachable via WiFi");
+                break;
+            case AFNetworkReachabilityStatusUnknown:
+            default:
+                NSLog(@"AFNetworkReachability Unknown");
+                break;
+        }
+    }];
+    
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
 
 
@@ -47,5 +72,13 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    if(self.isEable) {
+        return UIInterfaceOrientationMaskLandscape;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+}
 
 @end
